@@ -1,28 +1,28 @@
 import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import counterStore from "../store";
+import { counterActions } from "../store/counter";
+import { privacyActions } from "../store/privacy";
 
 const Controls = () => {
   const dispatch = useDispatch(counterStore);
   const inputRef = useRef(0);
 
   const handleIncrement = () => {
-    dispatch({ type: "INCREMENT" });
+    dispatch(counterActions.increment());
   };
   const handleDecrement = () => {
-    dispatch({ type: "DECREMENT" });
+    dispatch(counterActions.decrement());
+  };
+  const handlePrivacy = () => {
+    dispatch(privacyActions.toggle());
   };
   const handleAdd = () => {
     let num = inputRef.current.value;
     if (num == "") {
       return;
     }
-    dispatch({
-      type: "ADD",
-      payload: {
-        num,
-      },
-    });
+    dispatch(counterActions.add(num));
     inputRef.current.value = "";
   };
 
@@ -31,12 +31,7 @@ const Controls = () => {
     if (num == "") {
       return;
     }
-    dispatch({
-      type: "SUB",
-      payload: {
-        num,
-      },
-    });
+    dispatch(counterActions.subtract(num));
     inputRef.current.value = "";
   };
 
@@ -54,6 +49,12 @@ const Controls = () => {
           className="btn btn-outline-danger px-4"
           onClick={handleDecrement}>
           DECREMENT -1
+        </button>
+        <button
+          type="button"
+          className="btn btn-outline-warning px-4"
+          onClick={handlePrivacy}>
+          Privacy Toogle
         </button>
       </div>
 
